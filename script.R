@@ -30,31 +30,22 @@ annoying %>% filter(prop_city == "PHILADELPHIA") %>% view()
 us <- map_data("state")
 annoying <- read_csv("annoying_final.csv")
 
-#geom_point(data=xana, aes(x=geocode_longitude, y=geocode_latitude)) 
-# c("massachusetts", 
-#   "rhode island", 
-#   "pennsylvania", 
-#   "new york", 
-#   "conneticut",
-#   "new hampshire",
-#   "new jersey",
-#   "vermont"))
-
-
 x <- housing  %>% filter(dwelling_type == "Single Family Residential") %>%
-  select(prop_city, prop_state, apn, geocode_latitude, geocode_longitude)
-
-y <- x %>%
-  filter(!is.na(prop_city), !is.na(prop_state), !is.na(geocode_longitude),!is.na(geocode_latitude), !is.na(apn))
-
-z <- y %>% group_by(prop_city, prop_state,apn, geocode_latitude, geocode_longitude)
-
-f <- z %>%
+  select(prop_city, 
+         prop_state, 
+         apn, 
+         geocode_latitude,
+         geocode_longitude) %>%
+  filter(!is.na(prop_city), 
+         !is.na(prop_state),
+         !is.na(geocode_longitude),
+         !is.na(geocode_latitude), !is.na(apn)) %>% 
+  group_by(prop_city, 
+           prop_state,apn, 
+           geocode_latitude, 
+           geocode_longitude) %>%
   summarize(n = n()) %>% arrange(desc(n))
 
-write_csv(f, "data_final.csv")
-# 
-# write_csv(f, "annoying_final.csv")
 
 f %>% view()
 ggplot() +
